@@ -126,7 +126,7 @@ const AuthForm = () => {
                 </button>
             </p>
 
-            {showOtp ? (
+            {/* {showOtp ? (
                 <OtpVerification email={registeredEmail} onSuccess={() => {
                     setShowOtp(false);
                     setIsLogin(true);
@@ -134,9 +134,8 @@ const AuthForm = () => {
                 }} />
             ) : (
                 <>
-                    {/* your login/register form here */}
                 </>
-            )}
+            )} */}
 
         </div>
     );
