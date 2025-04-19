@@ -37,9 +37,6 @@ const AuthForm = () => {
             setMessage(data.message || data.error);
             setLoading(false);
 
-            console.log('Response:', data); // Log the response from the server
-
-            // If registration was successful, show OTP verification form
             if (!isLogin && res.ok) {
                 setRegisteredEmail(email);
                 setShowOtp(true);
@@ -126,7 +123,7 @@ const AuthForm = () => {
                 </button>
             </p>
 
-            {/* {showOtp ? (
+            {showOtp ? (
                 <OtpVerification email={registeredEmail} onSuccess={() => {
                     setShowOtp(false);
                     setIsLogin(true);
@@ -135,7 +132,7 @@ const AuthForm = () => {
             ) : (
                 <>
                 </>
-            )} */}
+            )}
 
         </div>
     );
