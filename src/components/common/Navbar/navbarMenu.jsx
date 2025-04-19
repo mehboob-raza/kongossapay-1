@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useState } from "react"
 import wallet from "../../../../public/icons/Svgs/wallet.svg"
 import transfers from "../../../../public/icons/Svgs/transfers.svg"
-import { Menu, X } from "lucide-react"
+import { ChevronDown, Menu, X } from "lucide-react"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -35,7 +35,26 @@ const components = [
 
 export function NavbarMenu() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [username, setUsername] = useState("")
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const token = localStorage.getItem("token")
+  const user = localStorage.getItem("user")
+  React.useEffect(() => {
+    if (token) {
+      setIsAuthenticated(true)
+      setUsername(user)
+    }
+  }, [token])
 
+
+  const handleLogout = () => {
+    localStorage.removeItem("token")
+    localStorage.removeItem("user")
+    setIsAuthenticated(false)
+    setDropdownOpen(false)
+    window.location.reload()
+  }
   return (
     <>
       {/* Desktop Navigation */}
@@ -110,12 +129,40 @@ export function NavbarMenu() {
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
-            <NavigationMenuItem>
+            {/* <NavigationMenuItem>
               <Link href="/auth-form" legacyBehavior passHref>
                 <NavigationMenuLink className="text-[#0a136e] hover:text-[#0770e6] transition-colors duration-300 font-semibold">
                   Login
                 </NavigationMenuLink>
               </Link>
+            </NavigationMenuItem> */}
+
+            <NavigationMenuItem>
+              {!isAuthenticated ? (
+                <Link href="/auth-form" legacyBehavior passHref>
+                  <NavigationMenuLink className="text-[#0a136e] hover:text-[#0770e6] font-semibold">Login</NavigationMenuLink>
+                </Link>
+              ) : (
+                <div className="relative">
+                  <button
+                    className="flex items-center gap-2 text-[#0a136e] font-semibold hover:text-[#0770e6]"
+                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                  >
+                    Logout <ChevronDown size={16} />
+                  </button>
+                  {dropdownOpen && (
+                    <div className="absolute mt-2 bg-white shadow-md rounded-md px-4 py-2 z-50">
+                      <p className="text-[#0a136e] font-medium text-sm mb-2">{username.username}</p>
+                      <button
+                        onClick={handleLogout}
+                        className="text-red-600 hover:underline text-sm cursor-pointer"
+                      >
+                        Confirm Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
             </NavigationMenuItem>
 
           </NavigationMenuList>

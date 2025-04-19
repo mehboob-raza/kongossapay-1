@@ -20,7 +20,6 @@ export async function POST(req) {
             return new Response(JSON.stringify({ error: 'OTP expired' }), { status: 400 });
         }
 
-        // Clear the OTP after successful verification
         await prisma.user.update({
             where: { email },
             data: {
